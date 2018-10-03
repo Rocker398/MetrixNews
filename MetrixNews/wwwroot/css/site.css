@@ -35,3 +35,132 @@ body {
         display: none;
     }
 }
+
+/* Defaults */
+
+body {
+    font-family: Helvetica, sans-serif;
+    min-width: 600px;
+    padding-top: 0px;
+}
+
+/* Navigation */
+.navbar {
+    min-width: 600px;
+}
+
+.nav.navbar-nav {
+    float: right;
+}
+
+.navbar-header {
+    position: relative;
+}
+
+.navbar-brand,
+.navbar-inverse .navbar-brand {
+    font-family: 'Source Sans pro', sans-serif;
+    color: #ffffff;
+    text-transform: uppercase;
+    line-height: 30px;
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.logoPart {
+    color: #faa23a;
+}
+
+.subTitle {
+    position: absolute;
+    bottom: -30px;
+    text-transform: uppercase;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: -0.01em;
+}
+
+/* Front Page */
+.frontPageGrid {
+    display: grid;
+    height: 80vh;
+    margin: 40px 0px;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-areas: "a a b b c" "d e f f f";
+    grid-gap: 15px;
+}
+
+.gridTile {
+    background: #e8e8e8;
+    position: relative;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+    transition: transform 0.5s;
+}
+
+.gridTile:hover {
+    transform: scale(1.02);
+}
+
+.tile_a {
+    grid-area: a;
+}
+
+.tile_b {
+    grid-area: b;
+}
+
+.tile_c {
+    grid-area: c;
+}
+
+.tile_d {
+    grid-area: d;
+}
+
+.tile_e {
+    grid-area: e;
+}
+
+.tile_f {
+    grid-area: f;
+}
+
+.tileInfoLabel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #ffffff;
+    padding: 6px 9px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.tile_a .tileInfoLabel {
+    background-color: #11a017bd;
+}
+
+.tile_b .tileInfoLabel {
+    background-color: #48228ab0;
+}
+
+.tile_c .tileInfoLabel {
+    background-color: #bf7200ba;
+}
+
+.tile_d .tileInfoLabel {
+    background-color: #087786c7;
+}
+
+.tile_e .tileInfoLabel {
+    background-color: #a2b113d1;
+}
+
+.tile_f .tileInfoLabel {
+    background-color: #a00d3fbd;
+}
