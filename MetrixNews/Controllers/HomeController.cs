@@ -15,7 +15,7 @@ namespace MetrixNews.Controllers
             return View();
         }
 
-        public IActionResult About()
+        /*public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
 
@@ -27,6 +27,11 @@ namespace MetrixNews.Controllers
             ViewData["Message"] = "Sign Up";
 
             return View();
+        }*/
+
+        public ActionResult Articles(int category)
+        {
+            return PartialView();
         }
 
         public IActionResult Privacy()

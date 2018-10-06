@@ -37,11 +37,20 @@ body {
 }
 
 /* Defaults */
-
 body {
     font-family: Helvetica, sans-serif;
     min-width: 600px;
     padding-top: 0px;
+}
+
+a,
+a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.container {
+    width: 100%;
 }
 
 /* Navigation */
@@ -86,7 +95,8 @@ body {
 .frontPageGrid {
     display: grid;
     height: 80vh;
-    margin: 40px 0px;
+    width: 88%;
+    margin: 40px auto;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: repeat(5, 1fr);
     grid-template-areas: "a a b b c" "d e f f f";
@@ -252,4 +262,55 @@ input:placeholder-shown { /* Standard one last! */
     left: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Article Card */
+.slick-slide {
+    width: 240px;
+}
+
+.articleCard {
+    display: grid;
+    grid-template-rows: 1.7fr 0.3fr;
+    height: 250px;
+    width: 240px;
+    box-shadow: 0px 3px 7px #d6d6d6;
+}
+
+.articleCard * {
+    pointer-events: none;
+}
+
+.articleCard .imageTop {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+
+.articleCard .bottomContainer {
+    padding: 8px 10px;
+}
+
+.biasLeft {
+    border: 2px solid #2196F3;
+    border-top: none;
+}
+
+.biasRight {
+    border: 2px solid #f44336;
+    border-top: none;
+}
+
+.articleTitle {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.articleExcerpt {
+    font-size: 8px;
+    padding: 8px 0px;
+}
+
+.articleSentimentInfo > div {
+    display: inline-block;
 }
