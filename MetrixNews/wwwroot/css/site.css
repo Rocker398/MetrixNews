@@ -47,6 +47,7 @@ body {
 /* Navigation */
 .navbar {
     min-width: 600px;
+    border-radius: 0px;
 }
 
 .nav.navbar-nav {
@@ -142,7 +143,7 @@ body {
 }
 
 .tile_a .tileInfoLabel {
-    background-color: #11a017bd;
+    background-color: #11a017bd; /* TODO: convert these to RGBA for edge support */
 }
 
 .tile_b .tileInfoLabel {
@@ -163,4 +164,92 @@ body {
 
 .tile_f .tileInfoLabel {
     background-color: #a00d3fbd;
+}
+
+/* Sign Up Card */
+.signUpCard {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    grid-template-rows: min-content;
+    width: 655px;
+    margin: 53px auto;
+    box-shadow: -1px 1px 3px #dedbdb;
+}
+
+.signUpCard .leftContent {
+    padding: 32px 50px 32px 30px;
+}
+
+.signUpCard input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #c3c3c3;
+    font-size: 13px;
+}
+
+.signUpCard input::-moz-placeholder { /* Firefox 19+ */
+    color: #c3c3c3;
+    font-size: 13px;
+}
+
+.signUpCard input:-ms-input-placeholder { /* IE 10+ */
+    color: #c3c3c3;
+    font-size: 13px;
+}
+
+.signUpCard input:-moz-placeholder { /* Firefox 18- */
+    color: #c3c3c3;
+    font-size: 13px;
+}
+
+input:placeholder-shown { /* Standard one last! */
+    color: #c3c3c3;
+    font-size: 13px;
+}
+
+.cardTitle {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.cardInstructions {
+    font-size: 13px;
+    padding: 23px 0px 44px 0px;
+    line-height: 26px;
+}
+
+.signUpEmailInput {
+    border: none;
+    border-bottom: 1px solid #cccbcb;
+    display: block;
+    width: 275px;
+    margin-bottom: 24px;
+    height: 30px;
+}
+
+.signUpButton {
+    border: none;
+    background-color: #ffa500;
+    color: #ffffff;
+    width: 190px;
+    padding: 11px 0px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.03em;
+}
+
+.rightContent {
+    position: relative;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.rightContent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
 }

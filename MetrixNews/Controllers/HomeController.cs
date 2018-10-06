@@ -22,9 +22,9 @@ namespace MetrixNews.Controllers
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult SignUp()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Sign Up";
 
             return View();
         }
