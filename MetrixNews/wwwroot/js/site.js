@@ -15,6 +15,7 @@ var MetrixNews = {
                 success: function (result) {
                     $('.mainContent').html(result);
                     MetrixNews.InitializeArticleSliders();
+                    MetrixNews.InitializeStatusSliders();
                     MetrixNews.CheckIsFirstVisit();
                 },
                 error: function (xhr) {
@@ -38,7 +39,11 @@ var MetrixNews = {
         MetrixNews.ResizeSliders();
     },
     InitializeStatusSliders: function () {
+        var mainContent = $('.mainContent');
 
+        mainContent.find('.gradientSpectrum').slider({
+            max: 100
+        });
     },
     CheckIsFirstVisit: function () {
         var popup = $('.modalPopupContainer');
@@ -62,8 +67,6 @@ var MetrixNews = {
         }
 
         var newPaddingStr = newPadding + 'px';
-
-        console.log(screenWidth);
 
         mainContent.find('.slider').slick('slickSetOption', 'centerPadding', newPaddingStr, true);
     }
