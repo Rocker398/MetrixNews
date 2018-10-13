@@ -36,14 +36,56 @@ var MetrixNews = {
             slidesToShow: 1
         });
 
+        mainContent.find('.sliderV2').slick({
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            responsive: [
+                {
+                    breakpoint: 1400,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 1180,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 900,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 670,
+                    settings: {
+                        centerMode: true,
+                        slidesToShow: 1,
+                        centerPadding: '108px'
+                    }
+                }
+            ]
+        });
+
         MetrixNews.ResizeSliders();
     },
     InitializeStatusSliders: function () {
         var mainContent = $('.mainContent');
+        var gradientSpectrum = mainContent.find('.gradientSpectrum');
 
-        mainContent.find('.gradientSpectrum').slider({
+        gradientSpectrum.slider({
+            value: 50,
             max: 100
         });
+
+        mainContent.find('.gradientSpectrum.ui-slider, .gradientSpectrum ui-slider-handler').off();
+        var label = $('<div class="handleLabel"><span>Slightly Conservative</span></div>');
+        gradientSpectrum.find('.ui-slider-handle').append(label);
     },
     CheckIsFirstVisit: function () {
         var popup = $('.modalPopupContainer');
