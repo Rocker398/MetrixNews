@@ -34,6 +34,11 @@ namespace MetrixNews.Controllers
             return PartialView();
         }
 
+        public ActionResult Topics(int topic)
+        {
+            return PartialView();
+        }
+
         public IActionResult Privacy()
         {
             return View();

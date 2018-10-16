@@ -279,7 +279,7 @@ input:placeholder-shown { /* Standard one last! */
 
 /* Article Card */
 .articleCategory {
-    margin: 50px 50px 0px 50px;
+    margin: 0px 50px 60px 50px;
 }
 
 .articleCategory:first-of-type {
@@ -291,6 +291,7 @@ input:placeholder-shown { /* Standard one last! */
     font-weight: bold;
     color: #FFC107;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
 .articleCard {
@@ -369,6 +370,29 @@ input:placeholder-shown { /* Standard one last! */
     color: #f44336;
 }
 
+/* Article Card small */
+.articleCard.smallCard {
+    height: 159px;
+    width: 159px;
+    margin: 8px 0px;
+}
+
+.articleCard.smallCard .articleTitle {
+    padding-right: 0px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 135px;
+}
+
+.articleCard.smallCard .articleExcerpt {
+    padding: 6px 0px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 135px;
+}
+
 /* Gradient Spectrum */
 .gradientSpectrum {
     margin-top: 15px;
@@ -417,6 +441,43 @@ input:placeholder-shown { /* Standard one last! */
     border-bottom: 8px solid #424949;
 }
 
+/* Emotion / Sentiment articles (Topic page) */
+.relatedArticles {
+    margin: 0px 50px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.typeContainer {
+    display: inline-block;
+    text-align: left;
+}
+
+.typeContainer:not(:first-of-type) {
+    margin-left: 20px;
+}
+
+.typeHeader {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.cardsContainer {
+    display: inline-block;
+}
+
+.emotionCategory {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.emotionLabel {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 15px;
+}
+
 /* Slick Slider */
 .slider .slick-slide {
     width: 240px !important;
@@ -462,7 +523,7 @@ input:placeholder-shown { /* Standard one last! */
 }
 
 .overlay {
-    position: absolute;
+    position: fixed;
     background: rgba(0, 0, 0, 0.6);
     top: 0;
     bottom: 0;
@@ -471,7 +532,7 @@ input:placeholder-shown { /* Standard one last! */
 }
 
 .modalPopup {
-    position: absolute;
+    position: fixed;
     background: #ffffff;
     top: 0;
     bottom: 0;
@@ -481,6 +542,7 @@ input:placeholder-shown { /* Standard one last! */
     width: 480px;
     margin: auto;
     padding: 7px 17px;
+    z-index: 100;
 }
 
 .headerTitle {
