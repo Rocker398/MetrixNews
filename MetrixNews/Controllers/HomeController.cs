@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MetrixNews.Models;
+using MetrixNews.Data;
+using MySql.Data.MySqlClient;
 
 namespace MetrixNews.Controllers
 {
@@ -12,6 +14,15 @@ namespace MetrixNews.Controllers
     {
         public IActionResult Index()
         {
+            using (MySqlConnection conn = DBAccess.GetConnection())
+            {
+                if (conn != null)
+                {
+                    List<ArticleData> articles = ArticleData.GetAll(conn);
+                    List<SourceData> sources = SourceData.GetAll(conn);
+                }
+            }
+
             return View();
         }
 

@@ -455,7 +455,7 @@ input:placeholder-shown { /* Standard one last! */
 }
 
 .typeContainer:not(:first-of-type) {
-    margin-left: 20px;
+    margin-left: 30px;
 }
 
 .typeHeader {
@@ -470,6 +470,10 @@ input:placeholder-shown { /* Standard one last! */
 .emotionCategory {
     display: inline-block;
     margin-right: 10px;
+}
+
+.emotionCategory:last-of-type {
+    margin-right: 0;
 }
 
 .emotionLabel {
