@@ -9,7 +9,7 @@
     <div class="slider" data-num-items="@(Model.Articles.Count)">
         @foreach (MetrixNews.Data.ArticleData article in Model.Articles)
         {
-            <a href="@(article.Url)">
+            <a href="@(article.Url)" target="_blank">
                 <div class="articleCard">
                     <div class="imageTop" style="background-image: url(@(article.ImageUrl));"></div>
                     <div class="bottomContainer biasLeft">
@@ -22,7 +22,7 @@
                             </div>
                             <div class="rating @(article.Sentiment >= 0 ? "positiveRating" : "negativeRating")">
                                 <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">@(article.Sentiment.ToString("0.##"))%</span>
+                                <span class="ratingAmount">@(article.SentimentPercent.ToString("0.#"))%</span>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
     <div class="sliderV2" data-num-items="@(Model.Articles.Count)">
         @foreach (MetrixNews.Data.ArticleData article in Model.Articles)
         {
-            <a href="@(article.Url)">
+            <a href="@(article.Url)" target="_blank">
                 <div class="articleCard">
                     <div class="imageTop" style="background-image: url(@(article.ImageUrl));"></div>
                     <div class="bottomContainer biasLeft">
@@ -70,7 +70,7 @@
                             </div>
                             <div class="rating @(article.Sentiment >= 0 ? "positiveRating" : "negativeRating")">
                                 <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">@(article.Sentiment.ToString("0.##")) %</span>
+                                <span class="ratingAmount">@(article.SentimentPercent.ToString("0.#")) %</span>
                             </div>
                         </div>
                     </div>

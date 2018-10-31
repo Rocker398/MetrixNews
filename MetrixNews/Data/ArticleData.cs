@@ -45,6 +45,13 @@ namespace MetrixNews.Data
 
         public Decimal Sentiment { get; set; }
 
+        public Decimal SentimentPercent {
+            get
+            {
+                return this.Sentiment * 100;
+            }
+        }
+
         public string SentimentFriendly { get; set; }
 
         public ArticleData()
