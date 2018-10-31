@@ -96,5 +96,10 @@ namespace MetrixNews.Data
 
             return selectStr;
         }
+
+        public override string ToString()
+        {
+            return this.ID + ", " + this.APIName + ", " + this.Biasness + ", " + this.Name + ", " + this.Url;
+        }
     }
 }

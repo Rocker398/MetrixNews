@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MetrixNews.Models;
 using MetrixNews.Data;
+using MetrixNews.Log;
 using MySql.Data.MySqlClient;
+using System.IO;
 
 namespace MetrixNews.Controllers
 {
@@ -14,15 +16,6 @@ namespace MetrixNews.Controllers
     {
         public IActionResult Index()
         {
-            using (MySqlConnection conn = DBAccess.GetConnection())
-            {
-                if (conn != null)
-                {
-                    List<ArticleData> articles = ArticleData.GetAll(conn);
-                    List<SourceData> sources = SourceData.GetAll(conn);
-                }
-            }
-
             return View();
         }
 
@@ -42,7 +35,17 @@ namespace MetrixNews.Controllers
 
         public ActionResult Articles(int category)
         {
-            return PartialView();
+            ArticleViewModel viewModel = new ArticleViewModel();
+
+            using (MySqlConnection conn = DBAccess.GetConnection())
+            {
+                if (conn != null)
+                {
+                    viewModel = ArticleViewModel.GetModel(conn);
+                }
+            }
+
+            return PartialView(viewModel);
         }
 
         public ActionResult Topics(int topic)

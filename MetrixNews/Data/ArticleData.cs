@@ -20,7 +20,7 @@ namespace MetrixNews.Data
             "Category", // 5
             "URL",
             "ImageURL",
-            "PublishedDate",
+            "PublishedAt",
             "Sentiment",
             "SentimentFriendly" // 10
         };
@@ -78,8 +78,16 @@ namespace MetrixNews.Data
             return Get(conn);
         }
 
+        public static List<ArticleData> GetByCategory(MySqlConnection conn,
+                                                      string category)
+        {
+            return Get(conn,
+                       category: category);
+        }
+
         private static List<ArticleData> Get(MySqlConnection conn,
-                                             int? id = null)
+                                             int? id = null,
+                                             string category = null)
         {
             List<ArticleData> articles = new List<ArticleData>();
 
@@ -91,28 +99,40 @@ namespace MetrixNews.Data
             string sql = GetDefaultSelectStatement() + " " +
                          "FROM " + TABLE_NAME + " " +
                          "WHERE 1 = 1 " +
-                         (id != null ? "AND " + TABLE_NAME + ".ID = @ID "
-                                     : string.Empty);
+                             (id != null ? "AND " + TABLE_NAME + ".ID = @ID "
+                                         : string.Empty) +
+                             (!string.IsNullOrWhiteSpace(category) ? "AND " + TABLE_NAME + ".Category = @Category "
+                                         : string.Empty) +
+                         "LIMIT 100 ";
 
             MySqlCommand cmd = new MySqlCommand(sql, conn);
 
+            if (!string.IsNullOrWhiteSpace(category))
+            {
+                cmd.Parameters.Add("@Category", MySqlDbType.VarChar).Value = category;
+            }
+
             using (MySqlDataReader reader = cmd.ExecuteReader())
             {
-                ArticleData article = new ArticleData() {
-                    ID = reader.GetInt32(0),
-                    SourceID = reader.GetInt32(1),
-                    Title = !reader.IsDBNull(2) ? reader.GetString(2) : string.Empty,
-                    Author = !reader.IsDBNull(3) ? reader.GetString(3) : string.Empty,
-                    Description = !reader.IsDBNull(4) ? reader.GetString(4) : string.Empty,
-                    Category = !reader.IsDBNull(5) ? reader.GetString(5) : string.Empty,
-                    Url = !reader.IsDBNull(6) ? reader.GetString(6) : string.Empty,
-                    ImageUrl = !reader.IsDBNull(7) ? reader.GetString(7) : string.Empty,
-                    PublishedDate = reader.GetDateTime(8),
-                    Sentiment = reader.GetDecimal(9),
-                    SentimentFriendly = !reader.IsDBNull(10) ? reader.GetString(10) : string.Empty
-                };
+                while (reader.Read())
+                {
+                    ArticleData article = new ArticleData()
+                    {
+                        ID = reader.GetInt32(0),
+                        SourceID = reader.GetInt32(1),
+                        Title = !reader.IsDBNull(2) ? reader.GetString(2) : string.Empty,
+                        Author = !reader.IsDBNull(3) ? reader.GetString(3) : string.Empty,
+                        Description = !reader.IsDBNull(4) ? reader.GetString(4) : string.Empty,
+                        Category = !reader.IsDBNull(5) ? reader.GetString(5) : string.Empty,
+                        Url = !reader.IsDBNull(6) ? reader.GetString(6) : string.Empty,
+                        ImageUrl = !reader.IsDBNull(7) ? reader.GetString(7) : string.Empty,
+                        PublishedDate = reader.GetDateTime(8),
+                        Sentiment = reader.GetDecimal(9),
+                        SentimentFriendly = !reader.IsDBNull(10) ? reader.GetString(10) : string.Empty
+                    };
 
-                articles.Add(article);
+                    articles.Add(article);
+                }
             }
 
             return articles;
@@ -123,6 +143,11 @@ namespace MetrixNews.Data
             string selectStr = "SELECT " + string.Join(", ", COLUMNS);
 
             return selectStr;
+        }
+
+        public override string ToString()
+        {
+            return this.ID + ", " + this.Author + ", " + this.Category + ", " + this.Description + ", " + this.ImageUrl + ", " + this.PublishedDate.ToShortDateString() + ", " + this.Sentiment + ", " + this.SentimentFriendly + ", " + this.SourceID + ", " + this.Title + ", " + this.Url;
         }
     }
 }

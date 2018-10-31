@@ -297,7 +297,7 @@ input:placeholder-shown { /* Standard one last! */
 .articleCard {
     display: grid;
     grid-template-rows: 1.7fr 0.3fr;
-    height: 230px;
+    height: 235px;
     width: 240px;
     box-shadow: 0px 3px 7px #d6d6d6;
 }
@@ -313,7 +313,7 @@ input:placeholder-shown { /* Standard one last! */
 }
 
 .articleCard .bottomContainer {
-    padding: 8px 10px;
+    padding: 8px 10px 5px 10px;
 }
 
 .biasLeft {
@@ -330,12 +330,14 @@ input:placeholder-shown { /* Standard one last! */
     font-size: 10px;
     font-weight: bold;
     letter-spacing: -0.02em;
-    padding-right: 47px;
+    padding-right: 30px;
+    min-height: 28px;
 }
 
 .articleExcerpt {
     font-size: 8px;
     padding: 8px 0px;
+    min-height: 38px;
 }
 
 .articleSentimentInfo > div {
@@ -383,6 +385,7 @@ input:placeholder-shown { /* Standard one last! */
     white-space: nowrap;
     overflow: hidden;
     width: 135px;
+    min-height: unset;
 }
 
 .articleCard.smallCard .articleExcerpt {
@@ -391,6 +394,7 @@ input:placeholder-shown { /* Standard one last! */
     white-space: nowrap;
     overflow: hidden;
     width: 135px;
+    min-height: unset;
 }
 
 /* Gradient Spectrum */

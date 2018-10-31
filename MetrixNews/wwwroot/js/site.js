@@ -62,6 +62,15 @@ var MetrixNews = {
             slidesToShow: 1
         });
 
+        mainContent.find('.slider').each(function () {
+            var numItemsInSlider = $(this).data('num-items');
+            var middle = Math.round(numItemsInSlider / 2);
+
+            if ($(this).hasClass('slick-initialized')) {
+                $(this).slick('slickGoTo', middle, false);
+            }
+        });
+
         mainContent.find('.sliderV2').slick({
             slidesToShow: 5,
             slidesToScroll: 5,
@@ -97,6 +106,15 @@ var MetrixNews = {
                     }
                 }
             ]
+        });
+
+        mainContent.find('.sliderV2').each(function () {
+            var numItemsInSlider = $(this).data('num-items');
+            var middle = Math.round(numItemsInSlider / 2);
+
+            if ($(this).hasClass('slick-initialized')) {
+                $(this).slick('slickGoTo', middle, false);
+            }
         });
 
         MetrixNews.ResizeSliders();

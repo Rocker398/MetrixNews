@@ -1,30 +1,35 @@
-﻿@{
+﻿@model MetrixNews.Models.ArticleViewModel
+
+@{
     ViewData["Title"] = "Articles";
 }
 
 <div class="articleCategory">
-    <div class="categoryTitle">Campaigns</div>
-    <div class="slider">
-        <a href="#">
-            <div class="articleCard">
-                <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                <div class="bottomContainer biasLeft">
-                    <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                    <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                    <div class="articleSentimentInfo">
-                        <div class="emotion">
-                            <div class="emotionIcon icon"></div>
-                            <span class="emotionText">Fear</span>
-                        </div>
-                        <div class="rating negativeRating">
-                            <div class="ratingIcon icon"></div>
-                            <span class="ratingAmount">-22.5%</span>
+    <div class="categoryTitle">Politics</div>
+    <div class="slider" data-num-items="@(Model.Articles.Count)">
+        @foreach (MetrixNews.Data.ArticleData article in Model.Articles)
+        {
+            <a href="@(article.Url)">
+                <div class="articleCard">
+                    <div class="imageTop" style="background-image: url(@(article.ImageUrl));"></div>
+                    <div class="bottomContainer biasLeft">
+                        <div class="articleTitle">@(article.Title.Length > 60 ? article.Title.Substring(0, 60) + "..." : article.Title)</div>
+                        <div class="articleExcerpt">@(article.Description.Length > 100 ? article.Description.Substring(0, 100) + "..." : article.Description)</div>
+                        <div class="articleSentimentInfo">
+                            <div class="emotion">
+                                <div class="emotionIcon icon"></div>
+                                <span class="emotionText">Fear</span>
+                            </div>
+                            <div class="rating @(article.Sentiment >= 0 ? "positiveRating" : "negativeRating")">
+                                <div class="ratingIcon icon"></div>
+                                <span class="ratingAmount">@(article.Sentiment.ToString("0.##"))%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </a>
-        <a href="#">
+            </a>
+        }
+        @*<a href="#">
             <div class="articleCard">
                 <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
                 <div class="bottomContainer biasRight">
@@ -42,15 +47,37 @@
                     </div>
                 </div>
             </div>
-        </a>
+        </a>*@
     </div>
     <div class="gradientSpectrum"></div>
 </div>
 
 <div class="articleCategory">
     <div class="categoryTitle">Campaigns</div>
-    <div class="sliderV2">
-        <a href="#">
+    <div class="sliderV2" data-num-items="@(Model.Articles.Count)">
+        @foreach (MetrixNews.Data.ArticleData article in Model.Articles)
+        {
+            <a href="@(article.Url)">
+                <div class="articleCard">
+                    <div class="imageTop" style="background-image: url(@(article.ImageUrl));"></div>
+                    <div class="bottomContainer biasLeft">
+                        <div class="articleTitle">@(article.Title.Length > 60 ? article.Title.Substring(0, 60) + "..." : article.Title)</div>
+                        <div class="articleExcerpt">@(article.Description.Length > 100 ? article.Description.Substring(0, 100) + "..." : article.Description)</div>
+                        <div class="articleSentimentInfo">
+                            <div class="emotion">
+                                <div class="emotionIcon icon"></div>
+                                <span class="emotionText">Fear</span>
+                            </div>
+                            <div class="rating @(article.Sentiment >= 0 ? "positiveRating" : "negativeRating")">
+                                <div class="ratingIcon icon"></div>
+                                <span class="ratingAmount">@(article.Sentiment.ToString("0.##")) %</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        }
+        @*<a href="#">
             <div class="articleCard">
                 <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
                 <div class="bottomContainer biasLeft">
@@ -201,7 +228,7 @@
                     </div>
                 </div>
             </div>
-        </a>
+        </a>*@
     </div>
     <div class="gradientSpectrum"></div>
 </div>
