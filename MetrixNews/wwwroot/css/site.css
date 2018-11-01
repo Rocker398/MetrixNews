@@ -191,7 +191,7 @@ a:hover {
     width: 655px;
     height: 330px;
     margin: 53px auto;
-    box-shadow: -1px 1px 3px #dedbdb;
+    box-shadow: 0px 1px 4px #dedbdb;
 }
 
 .signUpCard .rightContent {
@@ -628,4 +628,23 @@ input:placeholder-shown { /* Standard one last! */
 .negLabel {
     font-weight: normal;
     color: #f44336;
+}
+
+/* Popup Message */
+.messagePopup {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 10px;
+    color: #efefef;
+    padding: 18px 22px;
+    width: 300px;
+}
+
+.error {
+    background-color: #D80027;
+}
+
+.success {
+    background-color: #4caf50;
 }

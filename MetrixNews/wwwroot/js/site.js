@@ -18,7 +18,38 @@ var MetrixNews = {
                     MetrixNews.CheckIsFirstVisit();
                 },
                 error: function (xhr) {
-                    alert('Error: ' + xhr.statusText);
+                    PopupMsg.ShowError("Something went wrong, please refresh and try again.");
+                }
+            });
+        });
+
+        mainContent.off('click', '.signUpButton').on('click', '.signUpButton', function () {
+            var email = $('.signUpEmailInput').val();
+            var password = $('.signUpPasswordInput').val();
+
+            if (email.length == 0 || password.length == 0) {
+                PopupMsg.ShowError("Please enter an email and password");
+                return;
+            }
+            
+            $.ajax({
+                url: "/SignUp/Subscribe",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    email: email,
+                    password: password
+                },
+                success: function (result) {
+                    if (result.success) {
+                        PopupMsg.ShowMsg("Your information has been submitted, thank you for showing us your interest!");
+                    }
+                    else {
+                        PopupMsg.ShowError("Something went wrong, please refresh and try again.");
+                    }
+                },
+                error: function (xhr) {
+                    PopupMsg.ShowError("Something went wrong, please refresh and try again.");
                 }
             });
         });
@@ -41,7 +72,7 @@ var MetrixNews = {
                     MetrixNews.InitializeTopicActions();
                 },
                 error: function (xhr) {
-                    alert('Error: ' + xhr.statusText);
+                    PopupMsg.ShowError("Something went wrong, please refresh and try again.");
                 }
             });
         });
@@ -166,6 +197,32 @@ var MetrixNews = {
         var newPaddingStr = newPadding + 'px';
 
         mainContent.find('.slider').slick('slickSetOption', 'centerPadding', newPaddingStr, true);
+    }
+};
+
+var PopupMsg = {
+    ShowMsg: function (message) {
+        var popup = $('.messagePopup');
+        popup.html(message);
+        popup.addClass('success');
+
+        PopupMsg.ShowPopup(popup);
+    },
+    ShowError: function (message) {
+        var popup = $('.messagePopup');
+        popup.html(message);
+        popup.addClass('error');
+
+        PopupMsg.ShowPopup(popup);
+    },
+    ShowPopup: function (popup) {
+        popup.slideDown('slow', function () {
+            setTimeout(function () {
+                popup.slideUp('slow', function () {
+                    popup.removeClass('success').removeClass('error');
+                });
+            }, 5000)
+        });
     }
 };
 
