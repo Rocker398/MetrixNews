@@ -77,7 +77,7 @@ var MetrixNews = {
             });
         });
 
-        mainContent.off('mouseover', '.articleCard').on('mouseover', '.articleCard', function () {
+        mainContent.off('mouseover', '.articleCategory .articleCard').on('mouseover', '.articleCategory .articleCard', function () {
             var card = $(this);
             var biasness = card.data('spectrum-bias');
             var articleCategory = card.closest('.articleCategory');
