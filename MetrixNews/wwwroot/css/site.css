@@ -431,6 +431,26 @@ input:placeholder-shown { /* Standard one last! */
     font-weight: bold;
 }
 
+.handleLabel.opt0 {
+    width: 166px;
+    left: -47px;
+}
+
+.handleLabel.opt1 {
+    width: 110px;
+    left: -47px;
+}
+
+.handleLabel.opt2 {
+    width: 78px;
+    left: -32px;
+}
+
+.handleLabel.opt3 {
+    width: 152px;
+    left: -69px;
+}
+
 .handleLabel:before {
     content: '';
     position: absolute;
@@ -443,6 +463,10 @@ input:placeholder-shown { /* Standard one last! */
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-bottom: 8px solid #424949;
+}
+
+.handleLabel.opt0:before {
+    left: -58px;
 }
 
 /* Emotion / Sentiment articles (Topic page) */

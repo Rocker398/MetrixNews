@@ -75,16 +75,19 @@ namespace MetrixNews.Data
 
             using (MySqlDataReader reader = cmd.ExecuteReader())
             {
-                SourceData source = new SourceData()
+                while (reader.Read())
                 {
-                    ID = reader.GetInt32(0),
-                    Name = !reader.IsDBNull(1) ? reader.GetString(1) : string.Empty,
-                    APIName = !reader.IsDBNull(2) ? reader.GetString(2) : string.Empty,
-                    Url = !reader.IsDBNull(3) ? reader.GetString(3) : string.Empty,
-                    Biasness = !reader.IsDBNull(4) ? reader.GetString(4) : string.Empty
-                };
+                    SourceData source = new SourceData()
+                    {
+                        ID = reader.GetInt32(0),
+                        Name = !reader.IsDBNull(1) ? reader.GetString(1) : string.Empty,
+                        APIName = !reader.IsDBNull(2) ? reader.GetString(2) : string.Empty,
+                        Url = !reader.IsDBNull(3) ? reader.GetString(3) : string.Empty,
+                        Biasness = !reader.IsDBNull(4) ? reader.GetString(4) : string.Empty
+                    };
 
-                sources.Add(source);
+                    sources.Add(source);
+                }
             }
 
             return sources;

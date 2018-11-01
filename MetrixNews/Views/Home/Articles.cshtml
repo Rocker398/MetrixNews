@@ -10,7 +10,7 @@
         @foreach (MetrixNews.Data.ArticleData article in Model.Articles)
         {
             <a href="@(article.Url)" target="_blank">
-                <div class="articleCard">
+                <div class="articleCard" data-spectrum-bias="@(Model.Sources.ContainsKey(article.SourceID) ? Model.Sources[article.SourceID].Biasness : "Balanced")">
                     <div class="imageTop" style="background-image: url(@(article.ImageUrl));"></div>
                     <div class="bottomContainer biasLeft">
                         <div class="articleTitle">@(article.Title.Length > 60 ? article.Title.Substring(0, 60) + "..." : article.Title)</div>
@@ -58,7 +58,7 @@
         @foreach (MetrixNews.Data.ArticleData article in Model.Articles)
         {
             <a href="@(article.Url)" target="_blank">
-                <div class="articleCard">
+                <div class="articleCard" data-spectrum-bias="@(Model.Sources.ContainsKey(article.SourceID) ? Model.Sources[article.SourceID].Biasness : "Balanced")">
                     <div class="imageTop" style="background-image: url(@(article.ImageUrl));"></div>
                     <div class="bottomContainer biasLeft">
                         <div class="articleTitle">@(article.Title.Length > 60 ? article.Title.Substring(0, 60) + "..." : article.Title)</div>

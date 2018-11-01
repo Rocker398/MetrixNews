@@ -76,6 +76,58 @@ var MetrixNews = {
                 }
             });
         });
+
+        mainContent.off('mouseover', '.articleCard').on('mouseover', '.articleCard', function () {
+            var card = $(this);
+            var biasness = card.data('spectrum-bias');
+            var articleCategory = card.closest('.articleCategory');
+            var gradientSpectrum = articleCategory.children('.gradientSpectrum');
+            var sliderHandle = gradientSpectrum.find('.handleLabel');
+            var newClass = "";
+            var newText = "";
+            var sliderVal = 0;
+
+            if (biasness != null && biasness.length > 0) {
+                switch (biasness.toLowerCase()) {
+                    case "hyper-partisan liberal":
+                        {
+                            newClass = "opt0";
+                            newText = "Hyper-Partisan Liberal";
+                            sliderVal = 0;
+                            break;
+                        }
+
+                    case "skews liberal":
+                        {
+                            newClass = "opt1";
+                            newText = "Skews Liberal";
+                            sliderVal = 1;
+                            break;
+                        }
+
+                    case "skews conservative":
+                        {
+                            newClass = "opt3";
+                            newText = "Skews Conservative";
+                            sliderVal = 3;
+                            break;
+                        }
+
+                    case "balanced":
+                    default:
+                        {
+                            newClass = "opt2";
+                            newText = "Balanced";
+                            sliderVal = 2;
+                            break;
+                        }
+                }
+
+                sliderHandle.removeClass().addClass('handleLabel').addClass(newClass);
+                sliderHandle.children('span').text(newText);
+                gradientSpectrum.slider("value", sliderVal);
+            }
+        });
     },
     InitializeTopicActions: function () {
         MetrixNews.InitializeArticleSliders();
@@ -155,8 +207,9 @@ var MetrixNews = {
         var gradientSpectrum = mainContent.find('.gradientSpectrum');
 
         gradientSpectrum.slider({
-            value: 50,
-            max: 100
+            value: 2,
+            max: 4,
+            animate: "slow"
         });
 
         mainContent.find('.gradientSpectrum.ui-slider, .gradientSpectrum ui-slider-handler').off();
