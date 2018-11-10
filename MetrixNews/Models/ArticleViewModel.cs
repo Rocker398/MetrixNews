@@ -19,6 +19,13 @@ namespace MetrixNews.Models
             List<SourceData> sourceData = SourceData.GetAll(conn);
             Dictionary<int, SourceData> sources = sourceData.ToDictionary(x => x.ID, x => x);
 
+            articles = articles.OrderByDescending(x => sources.ContainsKey(x.SourceID) && sources[x.SourceID].Biasness.ToLower() == "hyper-partisan liberal")
+                               .ThenByDescending(x => sources.ContainsKey(x.SourceID) && sources[x.SourceID].Biasness.ToLower() == "skews liberal")
+                               .ThenByDescending(x => sources.ContainsKey(x.SourceID) && sources[x.SourceID].Biasness.ToLower() == "balanced")
+                               .ThenByDescending(x => sources.ContainsKey(x.SourceID) && sources[x.SourceID].Biasness.ToLower() == "skews conservative")
+                               .ThenByDescending(x => sources.ContainsKey(x.SourceID) && sources[x.SourceID].Biasness.ToLower() == "hyper-partisan conservative")
+                               .ToList();
+
             ArticleViewModel viewModel = new ArticleViewModel()
             {
                 Articles = articles,

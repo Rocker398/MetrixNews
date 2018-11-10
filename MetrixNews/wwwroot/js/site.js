@@ -82,50 +82,67 @@ var MetrixNews = {
             var biasness = card.data('spectrum-bias');
             var articleCategory = card.closest('.articleCategory');
             var gradientSpectrum = articleCategory.children('.gradientSpectrum');
-            var sliderHandle = gradientSpectrum.find('.handleLabel');
-            var newClass = "";
-            var newText = "";
+            var handle = gradientSpectrum.find('.handleLabel');
+            var change = true;
             var sliderVal = 0;
 
             if (biasness != null && biasness.length > 0) {
                 switch (biasness.toLowerCase()) {
                     case "hyper-partisan liberal":
                         {
-                            newClass = "opt0";
-                            newText = "Hyper-Partisan Liberal";
+                            if (handle.hasClass('opt0')) {
+                                change = false;
+                            }
+
                             sliderVal = 0;
                             break;
                         }
 
                     case "skews liberal":
                         {
-                            newClass = "opt1";
-                            newText = "Skews Liberal";
-                            sliderVal = 1;
+                            if (handle.hasClass('opt1')) {
+                                change = false;
+                            }
+
+                            sliderVal = 13;
                             break;
                         }
 
                     case "skews conservative":
                         {
-                            newClass = "opt3";
-                            newText = "Skews Conservative";
-                            sliderVal = 3;
+                            if (handle.hasClass('opt3')) {
+                                change = false;
+                            }
+
+                            sliderVal = 35;
+                            break;
+                        }
+
+                    case "hyper-partisan conservative":
+                        {
+                            if (handle.hasClass('opt4')) {
+                                change = false;
+                            }
+
+                            sliderVal = 50
                             break;
                         }
 
                     case "balanced":
                     default:
                         {
-                            newClass = "opt2";
-                            newText = "Balanced";
-                            sliderVal = 2;
+                            if (handle.hasClass('opt2')) {
+                                change = false;
+                            }
+
+                            sliderVal = 25;
                             break;
                         }
                 }
 
-                sliderHandle.removeClass().addClass('handleLabel').addClass(newClass);
-                sliderHandle.children('span').text(newText);
-                gradientSpectrum.slider("value", sliderVal);
+                if (change) {
+                    gradientSpectrum.slider("value", sliderVal);
+                }
             }
         });
     },
@@ -207,14 +224,65 @@ var MetrixNews = {
         var gradientSpectrum = mainContent.find('.gradientSpectrum');
 
         gradientSpectrum.slider({
-            value: 2,
-            max: 4,
-            animate: "slow"
+            value: 25,
+            max: 50,
+            step: 0.1,
+            animate: "slow",
+            slide: function (event, ui) {
+                MetrixNews.SetSliderLabel($(this), event, ui, true);
+            },
+            change: function (event, ui) {
+                MetrixNews.SetSliderLabel($(this), event, ui, false);
+            }
         });
 
-        mainContent.find('.gradientSpectrum.ui-slider, .gradientSpectrum ui-slider-handler').off();
+        //mainContent.find('.gradientSpectrum.ui-slider, .gradientSpectrum ui-slider-handler').off();
         var label = $('<div class="handleLabel"><span>Slightly Conservative</span></div>');
         gradientSpectrum.find('.ui-slider-handle').append(label);
+    },
+    SetSliderLabel: function (element, event, ui, goToSlide) {
+        var sliderHandle = $(ui.handle).find('.handleLabel');
+        var newValue = ui.value;
+        var newClass = "";
+        var newText = "";
+
+        if (newValue >= 0 && newValue < 10) {
+            newClass = "opt0";
+            newText = "Hyper-Partisan Liberal";
+        }
+        else if (newValue >= 10 && newValue < 20) {
+            newClass = "opt1";
+            newText = "Skews Liberal";
+        }
+        else if (newValue >= 30 && newValue < 40) {
+            newClass = "opt3";
+            newText = "Skews Conservative";
+        }
+        else if (newValue >= 40 && newValue <= 50) {
+            newClass = "opt4";
+            newText = "Hyper-Partisan Conservative";
+        }
+        else {
+            newClass = "opt2";
+            newText = "Balanced";
+        }
+
+        sliderHandle.removeClass().addClass('handleLabel').addClass(newClass);
+        sliderHandle.children('span').text(newText);
+
+        if (goToSlide) {
+            var slider = element.closest('.articleCategory').find('.slider');
+            var matchingArticle = slider.find('.articleCard[data-spectrum-bias="' + newText.toLowerCase() + '"]').first();
+
+            if (matchingArticle != null && matchingArticle.length > 0) {
+                var slideNum = matchingArticle.closest('.slick-slide').data('slick-index');
+                slider.slick('slickGoTo', slideNum);
+            }
+            else {
+                var slideNum = slider.find('.slick-slide:nth-last-of-type(2)').data('slick-index');
+                slider.slick('slickGoTo', slideNum);
+            }
+        }
     },
     CheckIsFirstVisit: function () {
         var popup = $('.modalPopupContainer');

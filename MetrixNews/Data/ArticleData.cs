@@ -110,7 +110,7 @@ namespace MetrixNews.Data
                                          : string.Empty) +
                              (!string.IsNullOrWhiteSpace(category) ? "AND " + TABLE_NAME + ".Category = @Category "
                                          : string.Empty) +
-                         "LIMIT 100 ";
+                         "LIMIT 20 ";
 
             MySqlCommand cmd = new MySqlCommand(sql, conn);
 

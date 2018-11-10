@@ -321,6 +321,11 @@ input:placeholder-shown { /* Standard one last! */
     border-top: none;
 }
 
+.biasBalanced {
+    border: 2px solid #e8e8e8;
+    border-top: none;
+}
+
 .biasRight {
     border: 2px solid #f44336;
     border-top: none;
@@ -438,7 +443,7 @@ input:placeholder-shown { /* Standard one last! */
 
 .handleLabel.opt1 {
     width: 110px;
-    left: -47px;
+    left: -48px;
 }
 
 .handleLabel.opt2 {
@@ -449,6 +454,11 @@ input:placeholder-shown { /* Standard one last! */
 .handleLabel.opt3 {
     width: 152px;
     left: -69px;
+}
+
+.handleLabel.opt4 {
+    width: 208px;
+    left: -146px;
 }
 
 .handleLabel:before {
@@ -467,6 +477,10 @@ input:placeholder-shown { /* Standard one last! */
 
 .handleLabel.opt0:before {
     left: -58px;
+}
+
+.handleLabel.opt4:before {
+    left: 98px;
 }
 
 /* Emotion / Sentiment articles (Topic page) */
@@ -632,10 +646,50 @@ input:placeholder-shown { /* Standard one last! */
 .icon {
     height: 15px;
     width: 15px;
-    background: #e8e8e8;
     display: inline-block;
     vertical-align: middle;
     margin-right: 8px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 15px;
+}
+
+.posIcon {
+    background-image: url(/images/icons/sentiment-score-positive.png);
+}
+
+.negIcon {
+    background-image: url(/images/icons/sentiment-score-negative.png);
+}
+
+.joyIcon {
+    background-image: url(/images/icons/joy-emotion.png);
+}
+
+.fearIcon {
+    background-image: url(/images/icons/fear-emotion.png);
+}
+
+.angerIcon {
+    background-image: url(/images/icons/anger-emotion.png);
+}
+
+.sadnessIcon {
+    background-image: url(/images/icons/sadness-emotion.png);
+}
+
+.disgustIcon {
+    background-image: url(/images/icons/disgust-emotion.png);
+}
+
+.leftBiasIcon {
+    background-color: #2196F3;
+    height: 2px;
+}
+
+.rightBiasIcon {
+    background-color: #f44336;
+    height: 2px;
 }
 
 .iconLabel {
