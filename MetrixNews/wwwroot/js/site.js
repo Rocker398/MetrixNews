@@ -61,11 +61,12 @@ var MetrixNews = {
         var mainContent = $('.mainContent');
 
         mainContent.off('click', '.categoryTitle').on('click', '.categoryTitle', function () {
+            var topic = $(this).closest('.articleCategory').data('category');
             $.ajax({
                 url: "/Home/Topics",
                 type: 'GET',
                 data: {
-                    topic: 1
+                    topic: topic
                 },
                 success: function (result) {
                     $('.mainContent').html(result);
@@ -76,7 +77,80 @@ var MetrixNews = {
                 }
             });
         });
+    },
+    InitializeTopicActions: function () {
+        MetrixNews.InitializeArticleSliders();
+        MetrixNews.InitializeStatusSliders();
+    },
+    InitializeArticleSliders: function () {
+        var mainContent = $('.mainContent');
 
+        mainContent.find('.slider').slick({
+            infinite: false,
+            /*slidesToShow: 5,
+            slidesToScroll: 5*/
+            centerMode: true,
+            centerPadding: '40%',
+            slidesToShow: 1
+        });
+
+        mainContent.find('.slider').each(function () {
+            var numItemsInSlider = $(this).data('num-items');
+            var middle = Math.round(numItemsInSlider / 2);
+
+            if ($(this).hasClass('slick-initialized')) {
+                $(this).slick('slickGoTo', middle, false);
+
+                //$(this).find('.slick-slide[data-slick-index="' + middle + '"] .articleCard').mouseover();
+            }
+        });
+
+        mainContent.find('.sliderV2').slick({
+            slidesToShow: 5,
+            slidesToScroll: 5,
+            infinite: false,
+            responsive: [
+                {
+                    breakpoint: 1400,
+                    settings: {
+                        slidesToShow: 4,
+                        slidesToScroll: 4
+                    }
+                },
+                {
+                    breakpoint: 1180,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3
+                    }
+                },
+                {
+                    breakpoint: 900,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 670,
+                    settings: {
+                        centerMode: true,
+                        slidesToShow: 1,
+                        centerPadding: '108px'
+                    }
+                }
+            ]
+        });
+
+        mainContent.find('.sliderV2').each(function () {
+            var numItemsInSlider = $(this).data('num-items');
+            var middle = Math.round(numItemsInSlider / 2);
+
+            if ($(this).hasClass('slick-initialized')) {
+                $(this).slick('slickGoTo', middle, false);
+            }
+        });
+        
         mainContent.off('mouseover', '.articleCategory .articleCard').on('mouseover', '.articleCategory .articleCard', function () {
             var card = $(this);
             var biasness = card.data('spectrum-bias');
@@ -145,77 +219,6 @@ var MetrixNews = {
                 }
             }
         });
-    },
-    InitializeTopicActions: function () {
-        MetrixNews.InitializeArticleSliders();
-        MetrixNews.InitializeStatusSliders();
-    },
-    InitializeArticleSliders: function () {
-        var mainContent = $('.mainContent');
-
-        mainContent.find('.slider').slick({
-            infinite: false,
-            /*slidesToShow: 5,
-            slidesToScroll: 5*/
-            centerMode: true,
-            centerPadding: '40%',
-            slidesToShow: 1
-        });
-
-        mainContent.find('.slider').each(function () {
-            var numItemsInSlider = $(this).data('num-items');
-            var middle = Math.round(numItemsInSlider / 2);
-
-            if ($(this).hasClass('slick-initialized')) {
-                $(this).slick('slickGoTo', middle, false);
-            }
-        });
-
-        mainContent.find('.sliderV2').slick({
-            slidesToShow: 5,
-            slidesToScroll: 5,
-            infinite: false,
-            responsive: [
-                {
-                    breakpoint: 1400,
-                    settings: {
-                        slidesToShow: 4,
-                        slidesToScroll: 4
-                    }
-                },
-                {
-                    breakpoint: 1180,
-                    settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 3
-                    }
-                },
-                {
-                    breakpoint: 900,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 2
-                    }
-                },
-                {
-                    breakpoint: 670,
-                    settings: {
-                        centerMode: true,
-                        slidesToShow: 1,
-                        centerPadding: '108px'
-                    }
-                }
-            ]
-        });
-
-        mainContent.find('.sliderV2').each(function () {
-            var numItemsInSlider = $(this).data('num-items');
-            var middle = Math.round(numItemsInSlider / 2);
-
-            if ($(this).hasClass('slick-initialized')) {
-                $(this).slick('slickGoTo', middle, false);
-            }
-        });
 
         MetrixNews.ResizeSliders();
     },
@@ -237,7 +240,7 @@ var MetrixNews = {
         });
 
         //mainContent.find('.gradientSpectrum.ui-slider, .gradientSpectrum ui-slider-handler').off();
-        var label = $('<div class="handleLabel"><span>Slightly Conservative</span></div>');
+        var label = $('<div class="handleLabel opt2"><span>Balanced</span></div>');
         gradientSpectrum.find('.ui-slider-handle').append(label);
     },
     SetSliderLabel: function (element, event, ui, goToSlide) {
@@ -278,10 +281,10 @@ var MetrixNews = {
                 var slideNum = matchingArticle.closest('.slick-slide').data('slick-index');
                 slider.slick('slickGoTo', slideNum);
             }
-            else {
+            /*else {
                 var slideNum = slider.find('.slick-slide:nth-last-of-type(2)').data('slick-index');
                 slider.slick('slickGoTo', slideNum);
-            }
+            }*/
         }
     },
     CheckIsFirstVisit: function () {

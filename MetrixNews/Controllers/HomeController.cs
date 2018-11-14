@@ -48,9 +48,18 @@ namespace MetrixNews.Controllers
             return PartialView(viewModel);
         }
 
-        public ActionResult Topics(int topic)
+        public ActionResult Topics(string topic)
         {
-            return PartialView();
+            TopicViewModel viewModel = new TopicViewModel();
+            using (MySqlConnection conn = DBAccess.GetConnection())
+            {
+                if (conn != null)
+                {
+                    viewModel = TopicViewModel.GetModel(conn, topic);
+                }
+            }
+
+            return PartialView(viewModel);
         }
 
         public IActionResult Privacy()

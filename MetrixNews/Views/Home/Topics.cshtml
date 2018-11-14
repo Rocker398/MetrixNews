@@ -1,162 +1,56 @@
-﻿@{
+﻿@model MetrixNews.Models.TopicViewModel
+
+@{
     ViewData["Title"] = "Topics";
 }
 
-<div class="articleCategory">
-    <div class="categoryTitle">Campaigns</div>
-    <div class="sliderV2">
-        <a href="#">
-            <div class="articleCard">
-                <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                <div class="bottomContainer biasLeft">
-                    <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                    <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                    <div class="articleSentimentInfo">
-                        <div class="emotion">
-                            <div class="emotionIcon icon"></div>
-                            <span class="emotionText">Fear</span>
-                        </div>
-                        <div class="rating negativeRating">
-                            <div class="ratingIcon icon"></div>
-                            <span class="ratingAmount">-22.5%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#">
-            <div class="articleCard">
-                <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                <div class="bottomContainer biasRight">
-                    <div class="articleTitle">Girl first in her family to go to university wins place at Cambridge</div>
-                    <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                    <div class="articleSentimentInfo">
-                        <div class="emotion">
-                            <div class="emotionIcon icon"></div>
-                            <span class="emotionText">Joy</span>
-                        </div>
-                        <div class="rating positiveRating">
-                            <div class="ratingIcon icon"></div>
-                            <span class="ratingAmount">18.9%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#">
-            <div class="articleCard">
-                <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                <div class="bottomContainer biasLeft">
-                    <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                    <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                    <div class="articleSentimentInfo">
-                        <div class="emotion">
-                            <div class="emotionIcon icon"></div>
-                            <span class="emotionText">Fear</span>
-                        </div>
-                        <div class="rating negativeRating">
-                            <div class="ratingIcon icon"></div>
-                            <span class="ratingAmount">-22.5%</span>
+@{
+    var category = "No Category";
+
+    if (Model.Articles.Count > 0)
+    {
+        category = Model.Articles[0].Category;
+    }
+}
+
+<div class="articleCategory" data-category="@(category)">
+    <div class="categoryTitle">@(category)</div>
+    <div class="slider" data-num-items="@(Model.Articles.Count)">
+        @foreach (MetrixNews.Data.StaticArticleData article in Model.Articles)
+        {
+            string biasness = Model.Sources.ContainsKey(article.SourceID) ? Model.Sources[article.SourceID].Biasness.ToLower() : "balanced";
+            string biasClass = "biasBalanced";
+            if (biasness == "hyper-partisan liberal" || biasness == "skews liberal")
+            {
+                biasClass = "biasLeft";
+            }
+            else if (biasness == "hyper-partisan conservative" || biasness == "skews conservative")
+            {
+                biasClass = "biasRight";
+            }
+
+            var emotion = article.ProminentEmotion;
+
+            <a href="@(article.Url)" target="_blank">
+                <div class="articleCard" data-spectrum-bias="@(biasness)">
+                    <div class="imageTop" style="background-image: url(@(!string.IsNullOrWhiteSpace(article.ImageUrl) ? article.ImageUrl : "https://via.placeholder.com/240x134?text=No+Image"));"></div>
+                    <div class="bottomContainer @(biasClass)">
+                        <div class="articleTitle">@(article.Title.Length > 60 ? article.Title.Substring(0, 60) + "..." : article.Title)</div>
+                        <div class="articleExcerpt">@(article.Description.Length > 100 ? article.Description.Substring(0, 100) + "..." : article.Description)</div>
+                        <div class="articleSentimentInfo">
+                            <div class="emotion">
+                                <div class="emotionIcon icon @(emotion.Item2.ToLower() + "Icon")"></div>
+                                <span class="emotionText">@(emotion.Item2)</span>
+                            </div>
+                            <div class="rating @(article.Sentiment >= 0 ? "positiveRating" : "negativeRating")">
+                                <div class="ratingIcon icon @(article.Sentiment >= 0 ? "posIcon" : "negIcon")"></div>
+                                <span class="ratingAmount">@(article.SentimentPercent.ToString("0.#"))%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </a>
-        <a href="#">
-            <div class="articleCard">
-                <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                <div class="bottomContainer biasRight">
-                    <div class="articleTitle">Girl first in her family to go to university wins place at Cambridge</div>
-                    <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                    <div class="articleSentimentInfo">
-                        <div class="emotion">
-                            <div class="emotionIcon icon"></div>
-                            <span class="emotionText">Joy</span>
-                        </div>
-                        <div class="rating positiveRating">
-                            <div class="ratingIcon icon"></div>
-                            <span class="ratingAmount">18.9%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#">
-            <div class="articleCard">
-                <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                <div class="bottomContainer biasLeft">
-                    <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                    <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                    <div class="articleSentimentInfo">
-                        <div class="emotion">
-                            <div class="emotionIcon icon"></div>
-                            <span class="emotionText">Fear</span>
-                        </div>
-                        <div class="rating negativeRating">
-                            <div class="ratingIcon icon"></div>
-                            <span class="ratingAmount">-22.5%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#">
-            <div class="articleCard">
-                <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                <div class="bottomContainer biasRight">
-                    <div class="articleTitle">Girl first in her family to go to university wins place at Cambridge</div>
-                    <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                    <div class="articleSentimentInfo">
-                        <div class="emotion">
-                            <div class="emotionIcon icon"></div>
-                            <span class="emotionText">Joy</span>
-                        </div>
-                        <div class="rating positiveRating">
-                            <div class="ratingIcon icon"></div>
-                            <span class="ratingAmount">18.9%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#">
-            <div class="articleCard">
-                <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                <div class="bottomContainer biasLeft">
-                    <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                    <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                    <div class="articleSentimentInfo">
-                        <div class="emotion">
-                            <div class="emotionIcon icon"></div>
-                            <span class="emotionText">Fear</span>
-                        </div>
-                        <div class="rating negativeRating">
-                            <div class="ratingIcon icon"></div>
-                            <span class="ratingAmount">-22.5%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#">
-            <div class="articleCard">
-                <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                <div class="bottomContainer biasRight">
-                    <div class="articleTitle">Girl first in her family to go to university wins place at Cambridge</div>
-                    <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                    <div class="articleSentimentInfo">
-                        <div class="emotion">
-                            <div class="emotionIcon icon"></div>
-                            <span class="emotionText">Joy</span>
-                        </div>
-                        <div class="rating positiveRating">
-                            <div class="ratingIcon icon"></div>
-                            <span class="ratingAmount">18.9%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
+            </a>
+        }
     </div>
     <div class="gradientSpectrum"></div>
 </div>
@@ -165,752 +59,165 @@
     <div class="typeContainer">
         <div class="typeHeader">Emotion</div>
         <div class="cardsContainer">
-            <div class="emotionCategory">
-                <div class="icon joyIcon"></div>
-                <div class="emotionLabel">Joy</div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
+            @foreach (var currEmotion in Model.ArticlesByEmotion)
+            {
+                string emotionStr = currEmotion.Key;
+                var articles = currEmotion.Value.OrderByDescending(x => x.ProminentEmotion.Item1).ToList();
+                var articleCount = 0;
+
+                <div class="emotionCategory">
+                    <div class="icon @(emotionStr.ToLower() + "Icon")"></div>
+                    <div class="emotionLabel">@(emotionStr)</div>
+
+                    @if (articles.Count == 0)
+                    {
+                        <div class="noArticles">No articles</div>
+                    }
+
+                    @foreach (MetrixNews.Data.StaticArticleData article in articles)
+                    {
+                        if (articleCount >= 6)
+                        {
+                            break;
+                        }
+
+                        articleCount++;
+                        string biasness = Model.Sources.ContainsKey(article.SourceID) ? Model.Sources[article.SourceID].Biasness.ToLower() : "balanced";
+                        string biasClass = "biasBalanced";
+                        if (biasness == "hyper-partisan liberal" || biasness == "skews liberal")
+                        {
+                            biasClass = "biasLeft";
+                        }
+                        else if (biasness == "hyper-partisan conservative" || biasness == "skews conservative")
+                        {
+                            biasClass = "biasRight";
+                        }
+
+                        var emotion = article.ProminentEmotion;
+
+                        <a href="@(article.Url)" target="_blank">
+                            <div class="articleCard smallCard">
+                                <div class="imageTop" style="background-image: url(@(!string.IsNullOrWhiteSpace(article.ImageUrl) ? article.ImageUrl : "https://via.placeholder.com/240x134?text=No+Image"));"></div>
+                                <div class="bottomContainer @(biasClass)">
+                                    <div class="articleTitle">@(article.Title.Length > 60 ? article.Title.Substring(0, 60) + "..." : article.Title)</div>
+                                    <div class="articleExcerpt">@(article.Description.Length > 100 ? article.Description.Substring(0, 100) + "..." : article.Description)</div>
+                                    <div class="articleSentimentInfo">
+                                        <div class="emotion">
+                                            <div class="emotionIcon icon @(emotion.Item2.ToLower() + "Icon")"></div>
+                                            <span class="emotionText">@(emotion.Item2)</span>
+                                        </div>
+                                        <div class="rating @(article.Sentiment >= 0 ? "positiveRating" : "negativeRating")">
+                                            <div class="ratingIcon icon @(article.Sentiment >= 0 ? "posIcon" : "negIcon")"></div>
+                                            <span class="ratingAmount">@(article.SentimentPercent.ToString("0.#"))%</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
+                        </a>
+                    }
                 </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="emotionCategory">
-                <div class="icon fearIcon"></div>
-                <div class="emotionLabel">Fear</div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="emotionCategory">
-                <div class="icon angerIcon"></div>
-                <div class="emotionLabel">Anger</div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="emotionCategory">
-                <div class="icon sadnessIcon"></div>
-                <div class="emotionLabel">Sadness</div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="emotionCategory">
-                <div class="icon disgustIcon"></div>
-                <div class="emotionLabel">Disgust</div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
     <div class="typeContainer">
         <div class="typeHeader">Sentiment</div>
         <div class="cardsContainer">
+            @{ 
+                var posArticles = Model.Articles.Where(x => x.Sentiment >= 0).OrderByDescending(x => x.Sentiment).ToList();
+                var posArticleCount = 0;
+                var negArticles = Model.Articles.Where(x => x.Sentiment < 0).OrderBy(x => x.Sentiment).ToList();
+                var negArticleCount = 0;
+            }
+
             <div class="emotionCategory">
                 <div class="icon posIcon"></div>
                 <div class="emotionLabel">Positive</div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
+                @foreach (MetrixNews.Data.StaticArticleData article in posArticles)
+                {
+                    if (posArticleCount >= 6)
+                    {
+                        break;
+                    }
+
+                    posArticleCount++;
+                    string biasness = Model.Sources.ContainsKey(article.SourceID) ? Model.Sources[article.SourceID].Biasness.ToLower() : "balanced";
+                    string biasClass = "biasBalanced";
+                    if (biasness == "hyper-partisan liberal" || biasness == "skews liberal")
+                    {
+                        biasClass = "biasLeft";
+                    }
+                    else if (biasness == "hyper-partisan conservative" || biasness == "skews conservative")
+                    {
+                        biasClass = "biasRight";
+                    }
+
+                    var emotion = article.ProminentEmotion;
+
+                    <a href="@(article.Url)" target="_blank">
+                        <div class="articleCard smallCard" data-spectrum-bias="@(biasness)">
+                            <div class="imageTop" style="background-image: url(@(!string.IsNullOrWhiteSpace(article.ImageUrl) ? article.ImageUrl : "https://via.placeholder.com/240x134?text=No+Image"));"></div>
+                            <div class="bottomContainer @(biasClass)">
+                                <div class="articleTitle">@(article.Title.Length > 60 ? article.Title.Substring(0, 60) + "..." : article.Title)</div>
+                                <div class="articleExcerpt">@(article.Description.Length > 100 ? article.Description.Substring(0, 100) + "..." : article.Description)</div>
+                                <div class="articleSentimentInfo">
+                                    <div class="emotion">
+                                        <div class="emotionIcon icon @(emotion.Item2.ToLower() + "Icon")"></div>
+                                        <span class="emotionText">@(emotion.Item2)</span>
+                                    </div>
+                                    <div class="rating @(article.Sentiment >= 0 ? "positiveRating" : "negativeRating")">
+                                        <div class="ratingIcon icon @(article.Sentiment >= 0 ? "posIcon" : "negIcon")"></div>
+                                        <span class="ratingAmount">@(article.SentimentPercent.ToString("0.#"))%</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    </a>
+                }
             </div>
             <div class="emotionCategory">
                 <div class="icon negIcon"></div>
                 <div class="emotionLabel">Negative</div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
+                @foreach (MetrixNews.Data.StaticArticleData article in negArticles)
+                {
+                    if (negArticleCount >= 6)
+                    {
+                        break;
+                    }
+
+                    negArticleCount++;
+                    string biasness = Model.Sources.ContainsKey(article.SourceID) ? Model.Sources[article.SourceID].Biasness.ToLower() : "balanced";
+                    string biasClass = "biasBalanced";
+                    if (biasness == "hyper-partisan liberal" || biasness == "skews liberal")
+                    {
+                        biasClass = "biasLeft";
+                    }
+                    else if (biasness == "hyper-partisan conservative" || biasness == "skews conservative")
+                    {
+                        biasClass = "biasRight";
+                    }
+
+                    var emotion = article.ProminentEmotion;
+
+                    <a href="@(article.Url)" target="_blank">
+                        <div class="articleCard smallCard" data-spectrum-bias="@(biasness)">
+                            <div class="imageTop" style="background-image: url(@(!string.IsNullOrWhiteSpace(article.ImageUrl) ? article.ImageUrl : "https://via.placeholder.com/240x134?text=No+Image"));"></div>
+                            <div class="bottomContainer @(biasClass)">
+                                <div class="articleTitle">@(article.Title.Length > 60 ? article.Title.Substring(0, 60) + "..." : article.Title)</div>
+                                <div class="articleExcerpt">@(article.Description.Length > 100 ? article.Description.Substring(0, 100) + "..." : article.Description)</div>
+                                <div class="articleSentimentInfo">
+                                    <div class="emotion">
+                                        <div class="emotionIcon icon @(emotion.Item2.ToLower() + "Icon")"></div>
+                                        <span class="emotionText">@(emotion.Item2)</span>
+                                    </div>
+                                    <div class="rating @(article.Sentiment >= 0 ? "positiveRating" : "negativeRating")">
+                                        <div class="ratingIcon icon @(article.Sentiment >= 0 ? "posIcon" : "negIcon")"></div>
+                                        <span class="ratingAmount">@(article.SentimentPercent.ToString("0.#"))%</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="articleCard smallCard">
-                    <div class="imageTop" style="background-image: url(/images/bobi-wine.jpg);"></div>
-                    <div class="bottomContainer biasLeft">
-                        <div class="articleTitle">Bobi Wine: Uganda's Afrobeats MP standing up to Musevini</div>
-                        <div class="articleExcerpt">Lauren Carey was part of a programme that encourages teenagers from divers backgrounds in Bristol to...</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating negativeRating">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">-22.5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    </a>
+                }
             </div>
         </div>
     </div>

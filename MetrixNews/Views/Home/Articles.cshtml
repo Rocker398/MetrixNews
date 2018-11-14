@@ -4,45 +4,52 @@
     ViewData["Title"] = "Articles";
 }
 
-<div class="articleCategory">
-    <div class="categoryTitle">Politics</div>
-    <div class="slider" data-num-items="@(Model.Articles.Count)">
-        @foreach (MetrixNews.Data.ArticleData article in Model.Articles)
-        {
-            string biasness = Model.Sources.ContainsKey(article.SourceID) ? Model.Sources[article.SourceID].Biasness.ToLower() : "balanced";
-            string biasClass = "biasBalanced";
-            if (biasness == "hyper-partisan liberal" || biasness == "skews liberal")
-            {
-                biasClass = "biasLeft";
-            }
-            else if (biasness == "hyper-partisan conservative" || biasness == "skews conservative")
-            {
-                biasClass = "biasRight";
-            }
+@foreach (var category in Model.Articles)
+{
+    var articles = category.Value;
 
-            <a href="@(article.Url)" target="_blank">
-                <div class="articleCard" data-spectrum-bias="@(biasness)">
-                    <div class="imageTop" style="background-image: url(@(article.ImageUrl));"></div>
-                    <div class="bottomContainer @(biasClass)">
-                        <div class="articleTitle">@(article.Title.Length > 60 ? article.Title.Substring(0, 60) + "..." : article.Title)</div>
-                        <div class="articleExcerpt">@(article.Description.Length > 100 ? article.Description.Substring(0, 100) + "..." : article.Description)</div>
-                        <div class="articleSentimentInfo">
-                            <div class="emotion">
-                                <div class="emotionIcon icon"></div>
-                                <span class="emotionText">Fear</span>
-                            </div>
-                            <div class="rating @(article.Sentiment >= 0 ? "positiveRating" : "negativeRating")">
-                                <div class="ratingIcon icon"></div>
-                                <span class="ratingAmount">@(article.SentimentPercent.ToString("0.#"))%</span>
+    <div class="articleCategory" data-category="@(category.Key)">
+        <div class="categoryTitle">@(category.Key)</div>
+        <div class="slider" data-num-items="@(category.Value.Count)">
+            @foreach (MetrixNews.Data.StaticArticleData article in articles)
+            {
+                string biasness = Model.Sources.ContainsKey(article.SourceID) ? Model.Sources[article.SourceID].Biasness.ToLower() : "balanced";
+                string biasClass = "biasBalanced";
+                if (biasness == "hyper-partisan liberal" || biasness == "skews liberal")
+                {
+                    biasClass = "biasLeft";
+                }
+                else if (biasness == "hyper-partisan conservative" || biasness == "skews conservative")
+                {
+                    biasClass = "biasRight";
+                }
+
+                var emotion = article.ProminentEmotion;
+
+                <a href="@(article.Url)" target="_blank">
+                    <div class="articleCard" data-spectrum-bias="@(biasness)">
+                        <div class="imageTop" style="background-image: url(@(!string.IsNullOrWhiteSpace(article.ImageUrl) ? article.ImageUrl : "https://via.placeholder.com/240x134?text=No+Image"));"></div>
+                        <div class="bottomContainer @(biasClass)">
+                            <div class="articleTitle">@(article.Title.Length > 60 ? article.Title.Substring(0, 60) + "..." : article.Title)</div>
+                            <div class="articleExcerpt">@(article.Description.Length > 100 ? article.Description.Substring(0, 100) + "..." : article.Description)</div>
+                            <div class="articleSentimentInfo">
+                                <div class="emotion">
+                                    <div class="emotionIcon icon @(emotion.Item2.ToLower() + "Icon")"></div>
+                                    <span class="emotionText">@(emotion.Item2)</span>
+                                </div>
+                                <div class="rating @(article.Sentiment >= 0 ? "positiveRating" : "negativeRating")">
+                                    <div class="ratingIcon icon @(article.Sentiment >= 0 ? "posIcon" : "negIcon")"></div>
+                                    <span class="ratingAmount">@(article.SentimentPercent.ToString("0.#"))%</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </a>
-        }
+                </a>
+            }
+        </div>
+        <div class="gradientSpectrum"></div>
     </div>
-    <div class="gradientSpectrum"></div>
-</div>
+}
 
 @*<div class="articleCategory">
         <div class="categoryTitle">Campaigns</div>
