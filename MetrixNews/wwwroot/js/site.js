@@ -240,7 +240,7 @@ var MetrixNews = {
         });
 
         //mainContent.find('.gradientSpectrum.ui-slider, .gradientSpectrum ui-slider-handler').off();
-        var label = $('<div class="handleLabel opt2"><span>Balanced</span></div>');
+        var label = $('<div class="handleLabel opt2" data-prev-opt="opt2"><span>Balanced</span></div>');
         gradientSpectrum.find('.ui-slider-handle').append(label);
     },
     SetSliderLabel: function (element, event, ui, goToSlide) {
@@ -269,6 +269,14 @@ var MetrixNews = {
             newClass = "opt2";
             newText = "Balanced";
         }
+
+        // If we haven't changed categories, don't waste time going to the same slide
+        var prevOpt = sliderHandle.data('prev-opt');
+        if (newClass == prevOpt) {
+            return;
+        }
+
+        sliderHandle.data('prev-opt', newClass);
 
         sliderHandle.removeClass().addClass('handleLabel').addClass(newClass);
         sliderHandle.children('span').text(newText);
