@@ -27,8 +27,8 @@ var MetrixNews = {
             var email = $('.signUpEmailInput').val();
             var password = $('.signUpPasswordInput').val();
 
-            if (email.length == 0 || password.length == 0) {
-                PopupMsg.ShowError("Please enter an email and password");
+            if (email.length == 0) { // || password.length == 0
+                PopupMsg.ShowError("Please enter an email"); // and password
                 return;
             }
             

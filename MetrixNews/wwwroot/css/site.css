@@ -247,6 +247,10 @@ input:placeholder-shown { /* Standard one last! */
     height: 30px;
 }
 
+.signUpPasswordInput {
+    display: none;
+}
+
 .signUpButton {
     border: none;
     background-color: #ffa500;
